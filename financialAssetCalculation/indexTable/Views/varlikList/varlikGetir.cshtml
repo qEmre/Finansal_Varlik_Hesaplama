@@ -1,0 +1,114 @@
+﻿<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
+    <style>
+        .table-container {
+            overflow-x: auto;
+        }
+
+        .table {
+            margin-top: 60px;
+            margin-left: 220px;
+            width: 60%;
+            border-collapse: collapse;
+        }
+
+        .table th, .table td {
+            border-bottom: 1px solid #ddd;
+            padding: 8px;
+            text-align: left;
+        }
+
+        .table th {
+            background-color: #f2f2f2;
+        }
+
+        .table td a {
+            color: #000;
+            transition: color 0.3s;
+            text-decoration: none;
+        }
+
+        .table td a:hover {
+            color: #007BFF;
+        }
+
+        h3 {
+            text-align: center;
+            margin-top: 15px;
+            margin-right: 70px;
+        }
+
+        .btn-container {
+            position: fixed;
+            bottom: 100px;
+            right: 80px;
+        }
+
+        #selectAllCheckbox {
+            margin-bottom: 10px;
+        }
+    </style>
+</head>
+<body>
+    <form method="post" asp-controller="hesaplama" asp-action="Index">
+        <div class="table-container">
+            <table class="table table-bordered">
+                <h3 style="color: blue">Ay/Yıl Bazlı Varlık Bilgileri Tablosu</h3>
+                <thead>
+                    <tr>
+                        <th>Hepsini Seç  <input type="checkbox" id="selectAllCheckbox" onclick="selectAll(this)"></th>
+                        <th>#</th>
+                        <th>Varlık Tutarı</th>
+                        <th>Varlık Bilgisi</th>
+                        <th>Tarih</th>
+                        <th>Güncelle</th>
+                        <th>Sil</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @foreach (var varlik in Model)
+                    {
+                        <tr>
+                            <td style="border-right: 1px solid #ddd;"><input type="checkbox" name="secilivarliklar" value="@varlik.Id"></td>
+                            <td style="border-right: 1px solid #ddd;">@varlik.Id</td>
+                            <td style="border-right: 1px solid #ddd;">@string.Format("{0:#,##0.00}", varlik.Tutari)</td>
+                            <td style="border-right: 1px solid #ddd;">@varlik.Name</td>
+                            <td style="border-right: 1px solid #ddd;">@varlik.Tarihi.ToString("MMMM yyyy")</td>
+                            <td style="border-right: 1px solid #ddd;">
+                                <form method="post" asp-controller="varlikGuncelle" asp-action="varlikUpdate">
+                                    <input type="hidden" name="id" value="@varlik.Id" />
+                                    <button type="submit" class="btn btn-warning" style="width: 125px;">Güncelle</button>
+                                </form>
+                            </td>
+                            <td style="border-right: 1px solid #ddd;">
+                                <form method="post" asp-controller="varlikList" asp-action="Delete">
+                                    <input type="hidden" name="id" value="@varlik.Id" />
+                                    <button type="submit" class="btn btn-danger" style="width: 125px;">Sil</button>
+                                </form>
+                            </td>
+                        </tr>
+                    }
+                </tbody>
+            </table>
+        </div>
+
+        <div class="btn-container">
+            <button class="btn btn-success" style="width: 150px;">Hesapla</button>
+        </div>
+    </form>
+
+    @* gerektiğinde hesaplamak için tüm varlık verileri seçmemiz için *@
+    <script>
+        function selectAll(source) {
+            checkboxes = document.getElementsByName('secilivarliklar');
+            for(var i=0, n=checkboxes.length;i<n;i++) {
+                checkboxes[i].checked = source.checked;
+            }
+        }
+    </script>
+</body>
+</html>

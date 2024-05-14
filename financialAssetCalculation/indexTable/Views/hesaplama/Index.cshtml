@@ -1,0 +1,96 @@
+﻿@model List<hesaplanmisOranlar>
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
+    <style>
+        .navbar {
+            display: none;
+        }
+
+        .table-container {
+            margin: 15px;
+        }
+
+        .table {
+            max-width: 100%;
+            border-collapse: collapse;
+        }
+
+        .table th, .table td {
+            border-bottom: 1px solid #ddd;
+            padding: 2px;
+            text-align: left;
+        }
+
+        .table th {
+            background-color: #f2f2f2;
+        }
+
+        .table td a {
+            color: #000;
+            transition: color 0.3s;
+            text-decoration: none;
+        }
+
+        .table td a:hover {
+            color: #007BFF;
+        }
+
+        h3 {
+            text-align: center;
+            margin-top: 0;
+            color: black;
+        }
+    </style>
+</head>
+<body>
+    <div class="table-container">
+        <h3>Rapor Tarih Aralığı: Aralık 2021 - Ağustos 2023</h3>
+        <table class="table table-bordered">
+            <thead>
+                <tr>
+                    <th>Tarih</th>
+                    <th>Varlık Tarih Varlık Tutarı</th>
+                    <th>Önceki Aya Göre Varlık Artış</th>
+                    <th>Varlık Değişim Oranı</th>
+                    <th>Varlık Tarih Dolar Kuru</th>
+                    <th>Dolarizasyon Varlık Tutarı</th>
+                    <th>Dolarizasyon Önceki Aya Göre Varlık Artış</th>
+                    <th>Dolarizasyon Varlık Değişim Oranı</th>
+                    <th>Dolarizasyon Etkisi Yüzde</th>
+                    <th>ÜFE Endeks</th>
+                    <th>Enflasyon Varlık Tutarı</th>
+                    <th>Enflasyon Önceki Aya Göre Varlık Artış</th>
+                    <th>Enflasyon Varlık Değişim Oranı</th>
+                    <th>Enflasyon Etkisi Yüzde</th>
+                </tr>
+            </thead>
+            <tbody>
+                @foreach (var oran in Model.OrderBy(o => o.Tarihi))
+                {
+                    <tr>
+                        <td>@oran.Tarihi.ToString("MMMM yyyy")</td>
+                        <td><span style="position:relative;">₺&nbsp;</span>@string.Format("{0:#,##0.00}", oran.varlikTutari)</td>
+                        <td>@(string.Format("{0:N2}%", oran.oncekiAyaGoreArtis))</td>
+                        <td>@(string.Format("{0:N2}%", oran.degisimOrani))</td>
+                        <td>@oran.varlikTarihiDolarKuru</td>
+                        <td><span style="position:relative;">₺&nbsp;</span>@string.Format("{0:#,##0.00}", oran.dolarizasyonVarlikTutari)</td>
+                        <td>@(string.Format("{0:N2}%", oran.dolarizasyonOncekiAyaGoreArtis))</td>
+                        <td>@(string.Format("{0:N2}%", oran.dolarizasyonVarlikDegisimOrani))</td>
+                        <td>@(string.Format("{0:N2}%", oran.dolarizasyonEtkisiYüzde))</td>
+                        <td>@oran.endeksOran</td>
+                        <td><span style="position:relative;">₺&nbsp;</span>@string.Format("{0:#,##0.00}", oran.enflasyonVarlikTutari)</td>
+                        <td>@(string.Format("{0:N2}%", oran.enflasyonOncekiAyaGorevarlikArtis))</td>
+                        <td>@(string.Format("{0:N2}%", oran.enflasyonVarlikDegisimOrani))</td>
+                        <td>@(string.Format("{0:N2}%", oran.enflasyonEtkisiYüzde))</td>
+                    </tr>
+                }
+            </tbody>
+        </table>
+    </div>
+</body>
+</html>
